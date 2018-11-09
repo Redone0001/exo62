@@ -1,31 +1,55 @@
-#include <random>
-#include <cmath>
 #include <iostream>
 #include <vector>
+#include <random>
+
 
 using namespace std;
 
-	random_device rd;                                         // Génération de nombre "vraiment" aléatoire
-	mt19937 gen(rd());                                        // Initialisation avec une seed imprédictible
-	uniform_real_distribution < double > uni ( 0. , 1. );   // Initialisation de ma distribution uniforme entre 0 et 1
+random_device rd;
+mt19937 gen(rd());
+uniform_real_distribution <double> uni (0.,1.);
 
 int main(){
-	vector <double> listeEvenement;
-	int nombreDeBon=0;
-	for(int i = 0; i< 50000;i++){
-		
-		double x = uni(gen);
-		if(x <0.1)
-			nombreDeBon ++;
-		listeEvenement.push_back(x);
-	}
-	int taille=1
-	vector <double> buffer[taille]
-	for(int i = 0; i< 50000;i++){
-		buffer[0]=listeEvenement.at(i);
+	long unsigned int tailleBuffer = 1;
+	int NombreEvenementBon =0;
+	int NombreEvenementBonRecup =0;
+do{
+//variables principales
+	vector <double> buffer;
+	int clock=0;
+	NombreEvenementBon =0;
+	NombreEvenementBonRecup =0;
+	
+	
+cout <<tailleBuffer<<")"<<endl;
+	
+	// boucle principale
+
+
+	for(int i = 0; i<50000;i++){
+		// on crée un évèmement
+		double evenement = uni(gen);
+		//on vérifie qu'il est utile
+		if( evenement < 0.05){
+			NombreEvenementBon++;
+			if(buffer.size() < tailleBuffer){
+				buffer.push_back(evenement);
+			}
+		}
+		// on ajoute 1 tick dans la clock
+		clock ++;
+	// debug : cout<<clock<<","<<buffer.size()<<endl;
+		if (clock >=8 && buffer.size()!= 0){
+			buffer.pop_back();
+			NombreEvenementBonRecup++;
+			clock=0;
+		}
 	
 	}
+	cout <<NombreEvenementBonRecup<<"/"<<NombreEvenementBon<<endl;
+	cout <<NombreEvenementBonRecup*100./NombreEvenementBon<<endl;
+	
+tailleBuffer++;
+}while(NombreEvenementBonRecup*100./NombreEvenementBon<98);
 	return 0;
 }
-
-
